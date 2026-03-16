@@ -7,8 +7,13 @@
 #include "TGameStateBase.generated.h"
 
 /**
- * 
+ * [서버→모든 클라이언트 복제] 게임 전체 공유 상태 관리
+ *
+ * 주요 기능:
+ * - ServerTime : 서버 경과 시간(초). Replicated로 모든 클라이언트에 동기화
+ * - Multicast_BroadcastMessage (GameMode에서 호출): 채팅 메시지를 전체 클라이언트에 전송
  */
+
 UCLASS()
 class TEST1_API ATGameStateBase : public AGameStateBase
 {
