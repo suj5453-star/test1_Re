@@ -1,0 +1,108 @@
+# ========================
+# Unreal Engine 5
+# ========================
+
+# 빌드 결과물 (컴파일 후 자동 생성)
+Binaries/
+Build/
+Intermediate/
+Saved/
+
+# 파생 데이터 캐시 (용량이 매우 크고 로컬 환경 의존)
+DerivedDataCache/
+
+# 플러그인 빌드 결과물 (플러그인 소스는 포함, 빌드 결과물만 제외)
+Plugins/**/Binaries/
+Plugins/**/Intermediate/
+
+# .uproject 실행에 필요한 자동 생성 파일
+*.sln
+
+# ShaderCache (플랫폼별로 자동 생성)
+ShaderCache/
+
+
+# ========================
+# C++ / Visual Studio
+# ========================
+
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.opendb
+
+# CMake (언리얼 자체는 아니지만 혼용 시)
+CMakeFiles/
+CMakeCache.txt
+
+
+# ========================
+# Rider (JetBrains)
+# ========================
+
+.idea/
+*.DotSettings.user
+
+
+# ========================
+# macOS
+# ========================
+
+.DS_Store
+*.DS_Store
+__MACOSX/
+
+
+# ========================
+# Windows
+# ========================
+
+Thumbs.db
+desktop.ini
+
+
+# ========================
+# 로그 및 임시 파일
+# ========================
+
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+
+
+# ========================
+# 패키징 결과물
+# ========================
+
+/Packaged/
+/Package/
+/Release/
+/Dist/
+
+
+# ========================
+# Git 추적 대상 (참고용 주석)
+# ========================
+# 추적 O: Source/, Config/, Content/, Plugins/[플러그인명]/Source/
+# 추적 X: 위 항목 전부
+```
+
+### 핵심 판단 기준 요약
+
+| 폴더/파일 | 추적 여부 | 이유 |
+|---|---|---|
+| `Source/` | ✅ 추적 | C++ 소스 코드 원본 |
+| `Content/` | ✅ 추적 | 에셋 원본 (`.uasset`, `.umap`) |
+| `Config/` | ✅ 추적 | 프로젝트 설정 |
+| `Binaries/` | ❌ 제외 | 컴파일 결과물, 자동 재생성 |
+| `Intermediate/` | ❌ 제외 | 빌드 중간 산물 |
+| `Saved/` | ❌ 제외 | 로그, 크래시 덤프, 임시 저장 |
+| `DerivedDataCache/` | ❌ 제외 | 수 GB에 달하는 로컬 캐시 |
+| `.vs/` / `.idea/` | ❌ 제외 | IDE 로컬 설정 |
+
+---
