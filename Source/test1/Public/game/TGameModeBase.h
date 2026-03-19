@@ -3,21 +3,33 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Player/TPlayerController.h"
 #include "TGameModeBase.generated.h"
 
-/**
- * [서버 전용] 게임 규칙 및 권위 처리 담당
- *
- * 주요 기능:
- * - ApplyDamageToAllPlayers : 모든 플레이어에게 데미지 적용 (PlayerState.Health 감소)
- * - SubmitMessage           : 클라이언트로부터 메시지 수신 후 라우팅 결정
- * - BroadcastMessage        : GameState를 통해 모든 클라이언트로 메시지 Multicast
- * - UpdateServerTime        : 타이머로 GameState.ServerTime 주기적 갱신
- */
+class ATPlayerController;
 
 UCLASS()
 class TEST1_API ATGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	ATGameModeBase();
+
+protected:
+	virtual void StartPlay() override;
+	FString SecretNumberString;
+	TArray<TObjectPtr<ATPlayerController>> AllPlayerControllers;
+	
+
+public:
+	virtual void OnPostLogin(AController* NewPlayer) override;
+	FString GenerateSecretNumber();
+	bool IsGuessNumberString(const FString& InNumberString);
+	FString JudgeResult(const FString& InSecretNumberString, const FString& InGuessNumberString);
+	void PrintChatMessageString(ATPlayerController* InChattingPlayerController, const FString& InChatMessageString);
+	void IncreaseGuessCount(ATPlayerController* InChattingPlayerController);
+	void ResetGame();
+	void JudgGame(ATPlayerController* InChattingPlayerController, int InStrikeCount);
+		
 };

@@ -5,19 +5,44 @@
 #include "GameFramework/PlayerController.h"
 #include "TPlayerController.generated.h"
 
-/**
- * [클라이언트↔서버 RPC 허브] 입력 처리 및 UI 연결 담당
- *
- * 주요 기능:
- * - Server_ApplyDamage  : [Server RPC] 클라이언트 요청 → GameMode에 데미지 처리 위임
- * - Server_SubmitMessage: [Server RPC] 클라이언트 채팅 입력 → GameMode에 메시지 라우팅 위임
- * - Client_ReceiveMessage: [Client RPC] 서버로부터 메시지 수신 → 채팅 위젯에 출력
- * - PollServerTime      : 타이머로 GameState.ServerTime을 주기적으로 읽어 위젯 갱신
- * - BeginPlay           : ChatWidget(WBP_Chat) 생성 및 뷰포트에 추가
- */
+class UTChatWidget;
 
 UCLASS()
 class TEST1_API ATPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+	
+protected:
+	virtual void BeginPlay() override;
+	
+public:
+	ATPlayerController();
+	
+	void SetChatMessageString(const FString& InChatMessageString);
+	void PrintChatMessageString(const FString& InChatMessageString);
+	
+	UFUNCTION(Client, Reliable)
+	void ClientRPCPrintChatMessageString(const FString& InChatMessageString);
+	UFUNCTION(Server, Reliable)
+	void ServerRPCPrintChatMessageString(const FString& InChatMessageString);
+	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
+protected:
+	FString ChatMessageString;
+	
+	// 위젯 클래스
+	UPROPERTY(EditDefaultsOnly, Category=UI)
+	TSubclassOf<UTChatWidget> ChatWidgetClass;
+	UPROPERTY()
+	TObjectPtr<UTChatWidget> CachedChatWidget;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> NotificationTextWidgetClass;
+	UPROPERTY()
+	TObjectPtr<UUserWidget> NotificationTextWidgetInstance;
+	
+public:
+	UPROPERTY(Replicated)
+	FText NotificationText;
 };
